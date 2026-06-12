@@ -6,120 +6,47 @@
 
 get_header(); 
 
-$pornstars = get_terms('pornstar', array(
+// Configure manual pagination for get_terms
+$items_per_page = 24;
+$paged = 1;
+if (get_query_var('page')) {
+    $paged = intval(get_query_var('page'));
+} elseif (get_query_var('paged')) {
+    $paged = intval(get_query_var('paged'));
+} elseif (isset($_GET['paged'])) {
+    $paged = intval($_GET['paged']);
+}
+$paged = max(1, $paged);
+$offset = ($paged - 1) * $items_per_page;
+
+$total_pornstars = wp_count_terms(array(
+    'taxonomy' => 'pornstar',
+    'hide_empty' => false,
+));
+$total_pages = ceil($total_pornstars / $items_per_page);
+
+$pornstars = get_terms(array(
+    'taxonomy' => 'pornstar',
     'hide_empty' => false,
     'orderby' => 'name',
-    'order' => 'ASC'
+    'order' => 'ASC',
+    'number' => $items_per_page,
+    'offset' => $offset,
 ));
-$star_count = (!empty($pornstars) && !is_wp_error($pornstars)) ? count($pornstars) : 0;
 ?>
 
 <div class="container page-container">
-    <header class="page-header">
+    <header class="page-header" style="text-align: center; margin-bottom: 40px;">
         <h1 class="page-title">Explore Pornstars</h1>
         <p class="page-subtitle">Browse through our directory of the world's most popular adult performers.</p>
     </header>
 
-    <!-- A-Z Alphabet Filter Bar -->
-    <div class="alphabet-filter-container glass" style="padding: 15px 20px; margin-bottom: 40px; border-radius: 12px; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px;">
-        <style>
-            .alphabet-btn {
-                padding: 6px 12px;
-                border-radius: 6px;
-                font-size: 13px;
-                font-weight: 700;
-                color: var(--text-secondary);
-                background: rgba(255, 255, 255, 0.03);
-                border: 1px solid rgba(255, 255, 255, 0.05);
-                cursor: pointer;
-                transition: var(--transition-fast);
-            }
-            .alphabet-btn:hover {
-                background: rgba(255, 51, 153, 0.1);
-                border-color: var(--accent-pink);
-                color: #ffffff;
-                box-shadow: 0 0 10px rgba(255, 51, 153, 0.2);
-            }
-            .alphabet-btn.active {
-                background: rgba(0, 240, 255, 0.15);
-                border-color: var(--accent-cyan);
-                color: #ffffff;
-                box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
-            }
-            .alphabet-btn.disabled {
-                opacity: 0.3;
-                cursor: not-allowed;
-                pointer-events: none;
-                background: transparent;
-                border-color: transparent;
-            }
-            .no-match-message {
-                display: none;
-                text-align: center;
-                padding: 40px;
-                background: var(--bg-card);
-                border: 1px solid var(--glass-border);
-                border-radius: 12px;
-                color: var(--text-secondary);
-                font-size: 16px;
-                width: 100%;
-                opacity: 0;
-                transition: opacity 0.3s ease;
-            }
-            .pornstars-grid {
-                transition: all 0.3s ease;
-            }
-            .pornstar-card {
-                transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
-            }
-        </style>
-        
-        <?php 
-        $alphabet = range('A', 'Z');
-        array_unshift($alphabet, '#');
-        
-        $letters_with_stars = array();
-        if (!empty($pornstars) && !is_wp_error($pornstars)) {
-            foreach ($pornstars as $star) {
-                $first_char = strtoupper(substr($star->name, 0, 1));
-                if (is_numeric($first_char)) {
-                    $letters_with_stars['#'] = true;
-                } else {
-                    $letters_with_stars[$first_char] = true;
-                }
-            }
-        }
-        
-        $first_active_letter = '';
-        foreach ($alphabet as $letter) {
-            if (isset($letters_with_stars[$letter])) {
-                $first_active_letter = strtolower($letter);
-                break;
-            }
-        }
-        
-        foreach ($alphabet as $letter) {
-            $letter_lower = strtolower($letter);
-            $has_stars = isset($letters_with_stars[$letter]);
-            $classes = array('alphabet-btn');
-            if (!$has_stars) {
-                $classes[] = 'disabled';
-            } elseif ($letter_lower === $first_active_letter) {
-                $classes[] = 'active';
-            }
-            echo '<button class="' . implode(' ', $classes) . '" data-letter="' . $letter_lower . '">' . $letter . '</button>';
-        }
-        ?>
-    </div>
-
     <?php if (!empty($pornstars) && !is_wp_error($pornstars)) : ?>
-        <div class="pornstars-grid" id="pornstars-list-grid">
+        <div class="pornstars-grid" id="pornstars-list-grid" style="margin-bottom: 40px;">
             <?php foreach ($pornstars as $star) : 
                 $term_link = get_term_link($star);
                 if (is_wp_error($term_link)) continue;
                 $video_count = $star->count;
-                $first_char = strtoupper(substr($star->name, 0, 1));
-                $letter_group = is_numeric($first_char) ? '#' : $first_char;
 
                 // Try to get cached performer image
                 $random_image = get_term_meta($star->term_id, '_pornstar_image_url', true);
@@ -147,7 +74,7 @@ $star_count = (!empty($pornstars) && !is_wp_error($pornstars)) ? count($pornstar
                     }
                 }
             ?>
-                <a href="<?php echo esc_url($term_link); ?>" class="pornstar-card" data-letter="<?php echo esc_attr(strtolower($letter_group)); ?>" style="<?php echo (strtolower($letter_group) === $first_active_letter) ? 'display: block; opacity: 1; transform: scale(1);' : 'display: none; opacity: 0; transform: scale(0.95);'; ?>">
+                <a href="<?php echo esc_url($term_link); ?>" class="pornstar-card">
                     <?php if (!empty($random_image)) : ?>
                         <img src="<?php echo esc_url($random_image); ?>" alt="<?php echo esc_attr($star->name); ?>" class="pornstar-card-image" referrerpolicy="no-referrer">
                     <?php else : ?>
@@ -165,64 +92,22 @@ $star_count = (!empty($pornstars) && !is_wp_error($pornstars)) ? count($pornstar
                     </div>
                 </a>
             <?php endforeach; ?>
-            
-            <!-- Dynamic No Match Fallback Message -->
-            <div class="no-match-message" id="no-match-message">
-                <p>No performers starting with "<span id="selected-letter-display"></span>" found.</p>
-            </div>
+        </div>
+
+        <!-- Pagination Block -->
+        <div class="pagination" style="margin-top: 30px; display: flex; justify-content: center; gap: 8px;">
+            <?php
+            echo paginate_links(array(
+                'total' => $total_pages,
+                'current' => $paged,
+                'format' => '?paged=%#%',
+                'prev_text' => __('&laquo; Prev', 'hexmy'),
+                'next_text' => __('Next &raquo;', 'hexmy'),
+                'type' => 'plain'
+            ));
+            ?>
         </div>
         
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const buttons = document.querySelectorAll('.alphabet-btn');
-                const cards = document.querySelectorAll('#pornstars-list-grid .pornstar-card');
-                const noMatchMsg = document.getElementById('no-match-message');
-                const selectedLetterDisplay = document.getElementById('selected-letter-display');
-
-                buttons.forEach(btn => {
-                    if (btn.classList.contains('disabled')) return;
-                    
-                    btn.addEventListener('click', function() {
-                        buttons.forEach(b => b.classList.remove('active'));
-                        this.classList.add('active');
-
-                        const filter = this.getAttribute('data-letter');
-                        let visibleCount = 0;
-
-                        cards.forEach(card => {
-                            const cardLetter = card.getAttribute('data-letter');
-                            const isMatch = (filter === 'all' || cardLetter === filter);
-
-                            if (isMatch) {
-                                card.style.display = 'block';
-                                setTimeout(() => {
-                                    card.style.opacity = '1';
-                                    card.style.transform = 'scale(1)';
-                                }, 10);
-                                visibleCount++;
-                            } else {
-                                card.style.opacity = '0';
-                                card.style.transform = 'scale(0.95)';
-                                setTimeout(() => {
-                                    card.style.display = 'none';
-                                }, 250);
-                            }
-                        });
-
-                        setTimeout(() => {
-                            if (visibleCount === 0) {
-                                selectedLetterDisplay.textContent = filter.toUpperCase();
-                                noMatchMsg.style.display = 'block';
-                                setTimeout(() => noMatchMsg.style.opacity = '1', 10);
-                            } else {
-                                noMatchMsg.style.display = 'none';
-                                noMatchMsg.style.opacity = '0';
-                            }
-                        }, 250);
-                    });
-                });
-            });
-        </script>
     <?php else : ?>
         <div class="no-tags-found">
             <p>No performers found. Performer tax terms enqueued in scrapers will display here.</p>
