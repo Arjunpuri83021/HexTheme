@@ -94,7 +94,7 @@ function hexmy_register_taxonomies() {
         ),
         'hierarchical' => true,
         'public' => true,
-        'rewrite' => array('slug' => 'category'),
+        'rewrite' => array('slug' => 'video-category'),
     ));
     
     // Tags
