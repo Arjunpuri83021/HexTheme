@@ -740,6 +740,11 @@ input[type="search"]:focus, input[type="text"]:focus, textarea:focus {
     color: var(--accent-red);
 }
 
+/* Mobile Menu Drawer - Hidden on Desktop */
+.mobile-menu {
+    display: none;
+}
+
 /* Responsive design */
 @media (max-width: 992px) {
     .archive-layout {
@@ -773,5 +778,70 @@ input[type="search"]:focus, input[type="text"]:focus, textarea:focus {
     .footer-grid {
         grid-template-columns: 1fr;
         gap: 20px;
+    }
+    .mobile-menu.active {
+        display: block;
+        background: #ffffff;
+        border-top: 1px solid var(--border-color);
+        border-bottom: 2px solid var(--accent-red);
+        padding: 15px;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        z-index: 99;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .mobile-navigation ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .mobile-navigation li {
+        margin-bottom: 8px;
+    }
+    .mobile-navigation a {
+        display: block;
+        font-size: 14px;
+        font-weight: 700;
+        color: #333333;
+        padding: 8px 12px;
+        border-radius: 4px;
+        transition: var(--transition-fast);
+    }
+    .mobile-navigation a:hover, .mobile-navigation li.active a {
+        background: var(--accent-red);
+        color: #ffffff;
+    }
+    .mobile-menu-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #eeeeee;
+    }
+    .mobile-upgrade-btn {
+        background: var(--accent-red);
+        color: #ffffff;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        border-radius: 4px;
+        font-size: 13px;
+    }
+    .mobile-exclusive-banner {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f5f5f5;
+        color: #666666;
+        font-weight: 700;
+        border-radius: 4px;
+        font-size: 12px;
+        border: 1px dashed #cccccc;
     }
 }
