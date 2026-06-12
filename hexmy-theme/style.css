@@ -682,6 +682,39 @@ img {
     gap: 6px;
 }
 
+/* Logo styling */
+.site-logo-text {
+    font-family: 'Open Sans', 'Roboto', sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    color: #222222;
+    letter-spacing: -1.5px;
+    line-height: 1;
+    text-transform: lowercase;
+}
+.site-logo-badge {
+    background: #E7434A;
+    color: #ffffff;
+    font-family: 'Open Sans', 'Roboto', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(231,67,74,0.3);
+    line-height: 1;
+    text-transform: uppercase;
+    margin-left: 2px;
+}
+
+/* Footer specific overrides */
+.site-footer .site-logo-text {
+    color: #ffffff;
+}
+
 /* Skeletons */
 .skeleton {
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
@@ -902,6 +935,14 @@ input[type="search"]:focus, input[type="text"]:focus, textarea:focus {
     }
     .logo-image {
         max-height: 36px;
+    }
+    .site-logo-text {
+        font-size: 22px !important;
+        letter-spacing: -1px !important;
+    }
+    .site-logo-badge {
+        font-size: 17px !important;
+        padding: 2px 6px !important;
     }
     .search-capsule, .upgrade-btn {
         display: none !important;

@@ -19,9 +19,23 @@
         <div class="container header-top-inner">
             <!-- Glowing Brand Logo -->
             <div class="site-logo">
-                <a href="<?php echo esc_url(home_url('/')); ?>" class="logo-link">
-                    <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/comxxx_logo.png" alt="comxxx" class="logo-image">
-                </a>
+                <?php
+                $custom_logo = get_theme_mod('hexmy_logo');
+                if ($custom_logo) {
+                    ?>
+                    <a href="<?php echo esc_url(home_url('/')); ?>" class="logo-link">
+                        <img src="<?php echo esc_url($custom_logo); ?>" alt="comxxx" class="logo-image">
+                    </a>
+                    <?php
+                } else {
+                    ?>
+                    <a href="<?php echo esc_url(home_url('/')); ?>" class="logo-link" style="display: flex; align-items: center; text-decoration: none;">
+                        <span class="site-logo-text">com</span>
+                        <span class="site-logo-badge">xxx</span>
+                    </a>
+                    <?php
+                }
+                ?>
             </div>
 
             <!-- Search Capsule with Dropdown Filter & Magnifier Button -->

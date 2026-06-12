@@ -9,9 +9,14 @@
                     <?php
                     $custom_logo = get_theme_mod('hexmy_logo');
                     if ($custom_logo) {
-                        echo '<img src="' . esc_url($custom_logo) . '" alt="' . get_bloginfo('name') . '">';
+                        echo '<a href="' . esc_url(home_url('/')) . '"><img src="' . esc_url($custom_logo) . '" alt="' . get_bloginfo('name') . '"></a>';
                     } else {
-                        echo 'HEXMY';
+                        ?>
+                        <a href="<?php echo esc_url(home_url('/')); ?>" class="logo-link" style="display: inline-flex; align-items: center; text-decoration: none;">
+                            <span class="site-logo-text">com</span>
+                            <span class="site-logo-badge">xxx</span>
+                        </a>
+                        <?php
                     }
                     ?>
                 </div>
