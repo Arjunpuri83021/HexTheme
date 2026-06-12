@@ -38,17 +38,10 @@ $likes = get_post_meta(get_the_ID(), '_video_likes', true);
         <h3 class="video-title"><?php the_title(); ?></h3>
         <div class="video-meta">
             <span class="video-views">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                    <circle cx="12" cy="12" r="3"></circle>
-                </svg>
                 <?php echo number_format($views ?: rand(1000, 9999)); ?> views
             </span>
-            <span class="video-rating" style="color: var(--accent-purple);">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                </svg>
-                <?php echo esc_html(!empty($likes) ? $likes : rand(70, 95)); ?>%
+            <span class="video-rating">
+                <?php echo esc_html(!empty($likes) ? $likes : rand(70, 95)); ?>% likes
             </span>
         </div>
     </div>

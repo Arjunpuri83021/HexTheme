@@ -19,11 +19,11 @@
     }
 </style>
 
-<div class="container" style="padding-top: 120px; padding-bottom: 60px;">
+<div class="container" style="padding-top: 30px; padding-bottom: 60px;">
     <div class="single-video-layout">
         <!-- Video Player Section -->
         <div>
-            <div class="glass" style="border-radius: 16px; overflow: hidden; margin-bottom: 30px;">
+            <div class="glass" style="border-radius: 4px; overflow: hidden; margin-bottom: 30px;">
                 <div style="aspect-ratio: 16/9; background: var(--bg-secondary); display: flex; align-items: center; justify-content: center; position: relative;">
                     <?php
                     $iframe_url = get_post_meta(get_the_ID(), '_video_iframe_url', true);
@@ -48,7 +48,7 @@
                 </div>
             </div>
             
-            <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 20px; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+            <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 20px; color: #333333;">
                 <?php the_title(); ?>
             </h1>
             
@@ -135,8 +135,8 @@
             if ($pornstars && !is_wp_error($pornstars)) :
             ?>
             <div style="margin-bottom: 25px;">
-                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 15px; color: var(--text-primary);">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-pink)" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 15px; color: #333333; text-transform: uppercase;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-red)" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
@@ -144,11 +144,11 @@
                 </h3>
                 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                     <?php foreach ($pornstars as $pornstar) : ?>
-                        <a href="<?php echo get_term_link($pornstar); ?>" style="display: inline-flex; align-items: center; gap: 10px; padding: 8px 16px 8px 8px; background: var(--bg-tertiary); border: 1px solid rgba(147, 51, 234, 0.2); border-radius: 30px; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(147,51,234,0.6)';this.style.background='rgba(147,51,234,0.1)'" onmouseout="this.style.borderColor='rgba(147,51,234,0.2)';this.style.background='var(--bg-tertiary)'">
-                            <div style="width: 32px; height: 32px; background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink)); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                <span style="color: #fff; font-weight: 700; font-size: 13px;"><?php echo strtoupper(substr($pornstar->name, 0, 1)); ?></span>
+                        <a href="<?php echo get_term_link($pornstar); ?>" style="display: inline-flex; align-items: center; gap: 10px; padding: 6px 12px; background: #f5f5f5; border: 1px solid #e5e5e5; border-radius: 4px; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.borderColor='var(--accent-red)';this.style.background='#fafafa'" onmouseout="this.style.borderColor='#e5e5e5';this.style.background='#f5f5f5'">
+                            <div style="width: 24px; height: 24px; background: var(--accent-red); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <span style="color: #fff; font-weight: 700; font-size: 11px;"><?php echo strtoupper(substr($pornstar->name, 0, 1)); ?></span>
                             </div>
-                            <span style="color: var(--text-primary); font-size: 14px; font-weight: 600;"><?php echo esc_html($pornstar->name); ?></span>
+                            <span style="color: #333333; font-size: 13px; font-weight: 700;"><?php echo esc_html($pornstar->name); ?></span>
                         </a>
                     <?php endforeach; ?>
                 </div>
@@ -156,9 +156,9 @@
             <?php endif; ?>
 
             <!-- Video Description -->
-            <div class="glass" style="padding: 30px; margin-bottom: 30px;">
-                <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 15px; color: var(--text-primary);">Description</h3>
-                <div style="color: var(--text-secondary); line-height: 1.8;">
+            <div class="glass" style="padding: 20px; margin-bottom: 30px; border-radius: 4px;">
+                <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 15px; color: #333333; text-transform: uppercase;">Description</h3>
+                <div style="color: #555555; line-height: 1.8; font-size: 14px;">
                     <?php the_content(); ?>
                 </div>
             </div>
@@ -169,10 +169,10 @@
             if ($tags && !is_wp_error($tags)) :
             ?>
             <div style="margin-bottom: 30px;">
-                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 15px; color: var(--text-primary);">Tags</h3>
-                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 15px; color: #333333; text-transform: uppercase;">Tags</h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                     <?php foreach ($tags as $tag) : ?>
-                        <a href="<?php echo get_term_link($tag); ?>" style="padding: 8px 16px; background: var(--bg-tertiary); border-radius: 20px; font-size: 13px; color: var(--text-secondary); transition: var(--transition-fast);" onmouseover="this.style.color='var(--accent-purple)'" onmouseout="this.style.color='var(--text-secondary)'">
+                        <a href="<?php echo get_term_link($tag); ?>" style="padding: 5px 10px; background: #f5f5f5; border: 1px solid #e5e5e5; border-radius: 4px; font-size: 12px; color: #666666; transition: var(--transition-fast);" onmouseover="this.style.color='#ffffff'; this.style.background='var(--accent-red)'; this.style.borderColor='var(--accent-red)';" onmouseout="this.style.color='#666666'; this.style.background='#f5f5f5'; this.style.borderColor='#e5e5e5';">
                             <?php echo $tag->name; ?>
                         </a>
                     <?php endforeach; ?>

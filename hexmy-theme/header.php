@@ -4,6 +4,9 @@
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@700&display=swap" rel="stylesheet">
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
@@ -49,21 +52,9 @@
 
             <!-- Header Actions Area -->
             <div class="header-right-actions">
-                <!-- Upgrade Star Button -->
-                <a href="<?php echo esc_url(home_url('/upgrade/')); ?>" class="upgrade-btn">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="star-icon">
-                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                    <span>Upgrade</span>
-                </a>
-
-                <!-- Exclusive Content Glassmorphic Banner -->
-                <div class="header-banner">
-                    <div class="banner-overlay"></div>
-                    <div class="banner-content">
-                        <span class="banner-title">EXCLUSIVE CONTENT</span>
-                    </div>
-                </div>
+                <!-- Login/Register Links (UltimaTube Style) -->
+                <a href="<?php echo esc_url(wp_login_url()); ?>" class="login-link-btn" style="font-size: 14px; font-weight: 700; color: #555555; margin-right: 15px;">Login</a>
+                <a href="<?php echo esc_url(wp_registration_url()); ?>" class="btn btn-primary register-btn-btn" style="font-size: 13px; font-weight: 700; background: var(--accent-red); color: #ffffff; padding: 8px 16px; border-radius: 4px;">Register</a>
 
                 <!-- Responsive Search Toggle Magnifier -->
                 <button class="search-toggle" id="search-toggle" aria-label="Toggle Search">
@@ -250,7 +241,5 @@
         </div>
     </nav>
 </div>
-
-<main class="site-main">
 
 <main class="site-main">
