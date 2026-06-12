@@ -623,6 +623,64 @@ img {
     color: #888888;
 }
 
+/* Pagination Styling (UltimaTube Style) */
+.pagination, .navigation.pagination {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+}
+.pagination .page-numbers, .navigation.pagination .nav-links .page-numbers {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #555555;
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+.pagination .page-numbers:hover, .navigation.pagination .nav-links .page-numbers:hover {
+    background: var(--accent-red);
+    color: #ffffff;
+    border-color: var(--accent-red);
+}
+.pagination .page-numbers.current, .navigation.pagination .nav-links .page-numbers.current {
+    background: var(--accent-red);
+    color: #ffffff;
+    border-color: var(--accent-red);
+    cursor: default;
+}
+.pagination .page-numbers.dots, .navigation.pagination .nav-links .page-numbers.dots {
+    background: transparent;
+    border-color: transparent;
+    color: #999999;
+    cursor: default;
+    min-width: 20px;
+}
+.pagination .page-numbers.prev, .pagination .page-numbers.next,
+.navigation.pagination .nav-links .prev, .navigation.pagination .nav-links .next {
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    padding: 0 12px;
+}
+.navigation.pagination h2.screen-reader-text {
+    display: none;
+}
+.navigation.pagination .nav-links {
+    display: flex;
+    gap: 6px;
+}
+
 /* Skeletons */
 .skeleton {
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
