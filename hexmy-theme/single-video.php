@@ -12,6 +12,11 @@
             gap: 20px;
         }
     }
+    @keyframes download-pulse {
+        0% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.7); }
+        70% { box-shadow: 0 0 0 10px rgba(236, 72, 153, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
+    }
 </style>
 
 <div class="container" style="padding-top: 120px; padding-bottom: 60px;">
@@ -80,7 +85,7 @@
             </div>
             
             <!-- Like/Dislike/Share Buttons -->
-            <div style="display: flex; gap: 15px; margin-bottom: 30px;">
+            <div style="display: flex; gap: 15px; margin-bottom: 30px; align-items: center; flex-wrap: wrap;">
                 <button class="btn btn-secondary like-button">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
@@ -109,6 +114,19 @@
                     </svg>
                     Save
                 </button>
+                <?php 
+                $direct_link = get_option('_hexmy_ad_direct_link');
+                if (!empty($direct_link)) : 
+                ?>
+                    <a href="<?php echo esc_url($direct_link); ?>" target="_blank" rel="noopener noreferrer" class="btn btn-download-hd" style="background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #fff; border: none; box-shadow: 0 0 15px rgba(236, 72, 153, 0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-weight: 600; padding: 10px 20px; border-radius: 8px; transition: all 0.3s ease; animation: download-pulse 2s infinite;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 0 25px rgba(236, 72, 153, 0.8)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 0 15px rgba(236, 72, 153, 0.4)';">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download HD
+                    </a>
+                <?php endif; ?>
             </div>
             
             <!-- Pornstars -->
@@ -171,6 +189,19 @@
         
         <!-- Sidebar -->
         <div>
+            <!-- Ad Banner 300x250 -->
+            <?php 
+            $banner_code = get_option('_hexmy_ad_banner_300x250');
+            if (!empty($banner_code)) : 
+            ?>
+                <div class="glass" style="padding: 20px; margin-bottom: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 290px;">
+                    <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 10px; display: block; text-align: center;">Advertisement</span>
+                    <div style="width: 300px; height: 250px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                        <?php echo $banner_code; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+
             <!-- Related Videos -->
             <div class="glass" style="padding: 20px; margin-bottom: 30px;">
                 <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 20px; color: var(--text-primary);">Related Videos</h3>

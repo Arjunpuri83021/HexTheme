@@ -62,6 +62,18 @@
     </div>
 </footer>
 
+<?php
+// Output Adsterra / Ad Network global scripts if configured
+$popunder_code = get_option('_hexmy_ad_popunder');
+$socialbar_code = get_option('_hexmy_ad_socialbar');
+if (!empty($popunder_code)) {
+    echo $popunder_code;
+}
+if (!empty($socialbar_code)) {
+    echo $socialbar_code;
+}
+?>
+
 <?php wp_footer(); ?>
 </body>
 </html>
