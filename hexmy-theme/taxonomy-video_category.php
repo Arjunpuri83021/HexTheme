@@ -35,7 +35,7 @@ $count = $term ? $term->count : 0;
             <?php endwhile; ?>
         </div>
 
-        <div class="pagination-wrapper" style="margin-top: 40px; display: flex; justify-content: center; gap: 8px;">
+        <div class="pagination" style="margin-top: 40px; display: flex; justify-content: center; gap: 8px;">
             <?php
             echo paginate_links(array(
                 'prev_text' => __('&laquo; Prev', 'hexmy'),

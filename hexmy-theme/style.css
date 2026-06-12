@@ -632,7 +632,7 @@ img {
     gap: 6px;
     width: 100%;
 }
-.pagination .page-numbers, .navigation.pagination .nav-links .page-numbers {
+.pagination .page-numbers, .pagination-wrapper .page-numbers, .navigation.pagination .nav-links .page-numbers {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -648,18 +648,18 @@ img {
     text-decoration: none;
     transition: var(--transition-fast);
 }
-.pagination .page-numbers:hover, .navigation.pagination .nav-links .page-numbers:hover {
+.pagination .page-numbers:hover, .pagination-wrapper .page-numbers:hover, .navigation.pagination .nav-links .page-numbers:hover {
     background: var(--accent-red);
     color: #ffffff;
     border-color: var(--accent-red);
 }
-.pagination .page-numbers.current, .navigation.pagination .nav-links .page-numbers.current {
+.pagination .page-numbers.current, .pagination-wrapper .page-numbers.current, .navigation.pagination .nav-links .page-numbers.current {
     background: var(--accent-red);
     color: #ffffff;
     border-color: var(--accent-red);
     cursor: default;
 }
-.pagination .page-numbers.dots, .navigation.pagination .nav-links .page-numbers.dots {
+.pagination .page-numbers.dots, .pagination-wrapper .page-numbers.dots, .navigation.pagination .nav-links .page-numbers.dots {
     background: transparent;
     border-color: transparent;
     color: #999999;
@@ -667,6 +667,7 @@ img {
     min-width: 20px;
 }
 .pagination .page-numbers.prev, .pagination .page-numbers.next,
+.pagination-wrapper .page-numbers.prev, .pagination-wrapper .page-numbers.next,
 .navigation.pagination .nav-links .prev, .navigation.pagination .nav-links .next {
     text-transform: uppercase;
     font-size: 11px;
