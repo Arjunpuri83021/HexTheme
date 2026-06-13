@@ -921,14 +921,33 @@ input[type="search"]:focus, input[type="text"]:focus, textarea:focus {
 
 /* Mobile Menu Drawer - Hidden on Desktop */
 .mobile-menu {
-    display: none;
+    display: block;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    background: #ffffff;
+    border-bottom: 0 solid var(--accent-red);
+    z-index: 99;
+    transition: max-height 0.3s ease, border-bottom-width 0.1s ease, box-shadow 0.3s ease;
+    box-shadow: none;
 }
 
 /* Responsive design */
 @media (max-width: 992px) {
     .archive-layout {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
         gap: 25px;
+    }
+    .archive-content {
+        order: 1; /* Main content first */
+    }
+    .archive-aside {
+        order: 2; /* Sidebar second */
+        margin-top: 20px;
     }
     .single-video-layout {
         grid-template-columns: 1fr;
@@ -966,18 +985,70 @@ input[type="search"]:focus, input[type="text"]:focus, textarea:focus {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-    .mobile-menu.active {
-        display: block;
+    
+    /* Mobile Search Dropdown */
+    .mobile-search-dropdown {
+        display: none;
         background: #ffffff;
-        border-top: 1px solid var(--border-color);
         border-bottom: 2px solid var(--accent-red);
-        padding: 15px;
+        padding: 10px 15px;
         position: absolute;
         top: 60px;
         left: 0;
         width: 100%;
-        z-index: 99;
+        z-index: 98;
         box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .mobile-search-dropdown.active {
+        display: block !important;
+    }
+    .mobile-search-form {
+        display: flex;
+        align-items: center;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        height: 38px;
+        background: #ffffff;
+        width: 100%;
+    }
+    .mobile-search-input {
+        flex: 1;
+        background: transparent;
+        border: none !important;
+        padding: 0 15px;
+        color: #333333;
+        font-size: 14px;
+        height: 100%;
+    }
+    .mobile-search-input:focus {
+        outline: none;
+    }
+    .mobile-search-submit {
+        background: var(--accent-red);
+        border: none;
+        width: 44px;
+        height: 100%;
+        color: #ffffff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+        transition: var(--transition-fast);
+    }
+    .mobile-search-submit:hover {
+        background: #c62828;
+    }
+    
+    /* Mobile Menu Drawer */
+    .mobile-menu {
+        top: 60px;
+    }
+    .mobile-menu.active {
+        max-height: 500px;
+        border-bottom: 3px solid var(--accent-red);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.12);
     }
     .mobile-navigation ul {
         list-style: none;
@@ -1030,5 +1101,61 @@ input[type="search"]:focus, input[type="text"]:focus, textarea:focus {
         border-radius: 4px;
         font-size: 12px;
         border: 1px dashed #cccccc;
+    }
+    
+    /* Horizontal scroll for video grid filter sub-menu chips */
+    .filters {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 10px;
+    }
+    .filters-list {
+        width: 100%;
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 5px;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .filters-list::-webkit-scrollbar {
+        display: none;
+    }
+    .filters-list a {
+        flex-shrink: 0;
+    }
+}
+
+@media (max-width: 580px) {
+    /* Grids: 2 columns on phones to fit beautifully and save vertical space */
+    .video-grid, .videos-list {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+    .video-title {
+        font-size: 12px !important;
+        height: 34px !important;
+        margin-bottom: 4px !important;
+    }
+    .video-meta {
+        font-size: 10px !important;
+    }
+    .video-info {
+        padding: 8px !important;
+    }
+    .duration-badge {
+        font-size: 9px !important;
+        padding: 1px 4px !important;
+    }
+    .hd-badge {
+        font-size: 7px !important;
+        padding: 1px 3px !important;
+    }
+    
+    .tags-grid, .pornstars-grid, .categories-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
     }
 }
