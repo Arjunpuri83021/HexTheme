@@ -1,23 +1,83 @@
 <?php get_header(); ?>
 
 <style>
+    /* Prevent page-level horizontal overflow */
+    body { overflow-x: hidden; }
+
     .single-video-layout {
         display: grid;
         grid-template-columns: 2fr 1fr;
         gap: 30px;
     }
+
+    @keyframes download-pulse {
+        0%   { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.7); }
+        70%  { box-shadow: 0 0 0 10px rgba(236, 72, 153, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
+    }
+
     @media (max-width: 768px) {
+        /* Single video layout switches to 1 column */
         .single-video-layout {
             grid-template-columns: 1fr;
             gap: 20px;
         }
-    }
-    @keyframes download-pulse {
-        0% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.7); }
-        70% { box-shadow: 0 0 0 10px rgba(236, 72, 153, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
+
+        /* Title font size reduction */
+        .single-video-layout h1 {
+            font-size: 17px !important;
+            line-height: 1.4 !important;
+            margin-bottom: 12px !important;
+        }
+
+        /* Video meta row (views, date, rating) — allow wrapping */
+        .single-video-layout > div > div[style*="display: flex; gap: 20px"] {
+            flex-wrap: wrap;
+            gap: 10px !important;
+            font-size: 12px !important;
+        }
+
+        /* Action buttons (Like, Dislike, Share, Save) */
+        .single-video-layout .btn {
+            font-size: 12px !important;
+            padding: 6px 10px !important;
+        }
+
+        /* Container padding fix */
+        .container {
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+        }
+
+        /* Description and Comments glass panels */
+        .single-video-layout .glass[style*="padding: 20px"],
+        .single-video-layout .glass[style*="padding: 30px"] {
+            padding: 14px !important;
+        }
+
+        /* Related videos: thumbnail width */
+        .single-video-layout a.video-card > div[style*="width: 120px"] {
+            width: 90px !important;
+        }
+
+        /* Related videos: title font */
+        .single-video-layout a.video-card h4 {
+            font-size: 12px !important;
+        }
+
+        /* Pornstar tags */
+        .single-video-layout a[style*="padding: 6px 12px"] {
+            padding: 4px 8px !important;
+            font-size: 12px !important;
+        }
+
+        /* Description heading */
+        .single-video-layout h3[style] {
+            font-size: 13px !important;
+        }
     }
 </style>
+
 
 <div class="container" style="padding-top: 30px; padding-bottom: 60px;">
     <div class="single-video-layout">
