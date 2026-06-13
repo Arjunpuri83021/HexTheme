@@ -238,41 +238,22 @@ img {
     display: flex;
     align-items: center;
     color: #bbbbbb;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
-    padding: 0 16px;
-    height: 100%;
-    position: relative;
-    transition: var(--transition-fast);
+    padding: 6px 14px;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
 }
 
 .main-navigation a:hover {
     color: #ffffff;
-}
-
-.main-navigation a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--accent-red);
-    transform: scaleX(0);
-    transform-origin: bottom center;
-    transition: transform 0.25s ease;
-}
-
-.main-navigation a:hover::after {
-    transform: scaleX(1);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
 }
 
 .main-navigation li.active a {
-    color: #ffffff;
-}
-
-.main-navigation li.active a::after {
-    transform: scaleX(1);
+    color: var(--accent-red);
+    text-shadow: 0 0 10px rgba(231, 67, 74, 0.6);
 }
 
 
