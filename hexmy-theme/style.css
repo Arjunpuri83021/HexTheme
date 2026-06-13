@@ -236,23 +236,44 @@ img {
 .main-navigation a {
     display: flex;
     align-items: center;
-    color: #ffffff;
+    color: #bbbbbb;
     font-size: 14px;
     font-weight: 700;
     padding: 0 16px;
     height: 100%;
+    position: relative;
     transition: var(--transition-fast);
 }
 
 .main-navigation a:hover {
-    background: #444444;
-    color: var(--accent-red);
+    color: #ffffff;
+}
+
+.main-navigation a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent-red);
+    transform: scaleX(0);
+    transform-origin: bottom center;
+    transition: transform 0.25s ease;
+}
+
+.main-navigation a:hover::after {
+    transform: scaleX(1);
 }
 
 .main-navigation li.active a {
-    background: var(--accent-red);
     color: #ffffff;
 }
+
+.main-navigation li.active a::after {
+    transform: scaleX(1);
+}
+
 
 .nav-icon {
     display: none; /* Hide large icons to match text-only menu */

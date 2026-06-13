@@ -66,10 +66,6 @@
 
             <!-- Header Actions Area -->
             <div class="header-right-actions">
-                <!-- Login/Register Links (UltimaTube Style) -->
-                <a href="<?php echo esc_url(wp_login_url()); ?>" class="login-link-btn" style="font-size: 14px; font-weight: 700; color: #555555; margin-right: 15px;">Login</a>
-                <a href="<?php echo esc_url(wp_registration_url()); ?>" class="btn btn-primary register-btn-btn" style="font-size: 13px; font-weight: 700; background: var(--accent-red); color: #ffffff; padding: 8px 16px; border-radius: 4px;">Register</a>
-
                 <!-- Responsive Search Toggle Magnifier -->
                 <button class="search-toggle" id="search-toggle" aria-label="Toggle Search">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -125,14 +121,7 @@
                             <span>Home</span>
                         </a>
                     </li>
-                    <li class="<?php echo is_post_type_archive('video') || is_singular('video') ? 'active' : ''; ?>">
-                        <a href="<?php echo esc_url(home_url('/videos/')); ?>">
-                            <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
-                            </svg>
-                            <span>Videos</span>
-                        </a>
-                    </li>
+
                     <li class="<?php echo is_tax('video_category') ? 'active' : ''; ?>">
                         <a href="<?php echo esc_url(home_url('/category/')); ?>">
                             <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -191,14 +180,7 @@
                     <span>Home</span>
                 </a>
             </li>
-            <li class="<?php echo is_post_type_archive('video') || is_singular('video') ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url(home_url('/videos/')); ?>">
-                    <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
-                    </svg>
-                    <span>Videos</span>
-                </a>
-            </li>
+
             <li class="<?php echo is_tax('video_category') ? 'active' : ''; ?>">
                 <a href="<?php echo esc_url(home_url('/category/')); ?>">
                     <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
