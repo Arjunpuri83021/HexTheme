@@ -37,6 +37,24 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Intercept write actions in demo mode
+if ((isset($_SESSION['is_demo']) && $_SESSION['is_demo'] === true) || (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'demo')) {
+    $current_page = basename($_SERVER['PHP_SELF']);
+    $is_post = ($_SERVER['REQUEST_METHOD'] === 'POST');
+    $is_delete_page = ($current_page === 'delete-video.php');
+    $has_delete_param = (isset($_GET['delete']) || isset($_GET['delete_tag']) || isset($_GET['delete_pornstar']));
+
+    if ($is_post || $is_delete_page || $has_delete_param) {
+        setcookie('demo_alert', '1', time() + 30, '/');
+        if ($is_delete_page) {
+            header('Location: videos.php');
+        } else {
+            header("Location: " . $_SERVER['PHP_SELF'] . ( !empty($_SERVER['QUERY_STRING']) && !isset($_GET['delete']) && !isset($_GET['delete_tag']) && !isset($_GET['delete_pornstar']) ? '?' . $_SERVER['QUERY_STRING'] : '' ));
+        }
+        exit();
+    }
+}
+
 // Admin credentials
 if (!defined('ADMIN_USERNAME')) {
     define('ADMIN_USERNAME', 'admin');

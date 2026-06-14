@@ -341,6 +341,10 @@ function hexmy_auto_create_pages() {
         'search' => array(
             'title' => 'Search',
             'slug' => 'search'
+        ),
+        'related-videos' => array(
+            'title' => 'Related Videos',
+            'slug' => 'related-videos'
         )
     );
     
@@ -518,3 +522,27 @@ function hexmy_get_search_suggestions() {
 }
 add_action('wp_ajax_hexmy_search_suggestions', 'hexmy_get_search_suggestions');
 add_action('wp_ajax_nopriv_hexmy_search_suggestions', 'hexmy_get_search_suggestions');
+
+// Remove Email, Website, and Cookies fields from comment form
+function hexmy_remove_comment_fields($fields) {
+    if (isset($fields['email'])) {
+        unset($fields['email']);
+    }
+    if (isset($fields['url'])) {
+        unset($fields['url']);
+    }
+    if (isset($fields['cookies'])) {
+        unset($fields['cookies']);
+    }
+    return $fields;
+}
+add_filter('comment_form_default_fields', 'hexmy_remove_comment_fields');
+
+// Supply dummy email if comment email requirement is enabled
+function hexmy_bypass_comment_email_requirement($commentdata) {
+    if (empty($commentdata['comment_author_email'])) {
+        $commentdata['comment_author_email'] = 'anonymous@localhost.com';
+    }
+    return $commentdata;
+}
+add_filter('preprocess_comment', 'hexmy_bypass_comment_email_requirement');

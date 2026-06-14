@@ -14,8 +14,8 @@ $categories = get_terms(['taxonomy' => 'video_category', 'hide_empty' => false])
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hexmy Admin - Web Scraper Tool</title>
-    <link rel="stylesheet" href="css/admin-style.css">
-    <script src="js/admin.js" defer></script>
+    <link rel="stylesheet" href="css/admin-style.css?v=3">
+    <script src="js/admin.js?v=3" defer></script>
     <style>
         /* ── Progress Dashboard ───────────────────────── */
         .progress-section {
@@ -228,16 +228,7 @@ $categories = get_terms(['taxonomy' => 'video_category', 'hide_empty' => false])
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="sidebar-logo">HEXMY</div>
-        <a href="dashboard.php" class="nav-item">Dashboard</a>
-        <a href="videos.php" class="nav-item">Videos</a>
-        <a href="add-video.php" class="nav-item">Add Video</a>
-        <a href="categories.php" class="nav-item">Categories</a>
-        <a href="tags.php" class="nav-item">Tags</a>
-        <a href="pornstars.php" class="nav-item">Pornstars</a>
-        <a href="scraper.php" class="nav-item active">Scraper</a>
-    </div>
+    <?php $active_page = 'scraper.php'; require_once 'sidebar.php'; ?>
 
     <div class="main-content">
         <div class="header">
@@ -575,3 +566,5 @@ function resetUI() {
 </script>
 </body>
 </html>
+
+

@@ -88,6 +88,11 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+    overflow: hidden; /* Only main-content scrolls — sidebar stays fixed */
+}
+
 body {
     font-family: var(--font-body);
     background-color: var(--bg-dark);
@@ -117,14 +122,46 @@ body {
 /* ── Navigation Sidebar ──────────────────────────────────────── */
 .sidebar {
     width: 260px;
+    min-width: 260px;
     background: var(--bg-panel);
     border-right: var(--sidebar-border);
-    padding: 30px 15px;
+    padding: 0;
     position: fixed;
+    top: 0;
+    left: 0;
     height: 100vh;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Outer container never scrolls */
     z-index: 1000;
-    transition: var(--transition-smooth);
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+    box-shadow: 1px 0 0 var(--border-glass);
+}
+
+/* Sidebar top brand area — always visible */
+.sidebar-brand {
+    flex-shrink: 0;
+    padding: 28px 20px 0;
+}
+
+/* Sidebar nav area — scrolls internally */
+.sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px 15px 30px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-glass) transparent;
+}
+.sidebar-nav::-webkit-scrollbar {
+    width: 4px;
+}
+.sidebar-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+.sidebar-nav::-webkit-scrollbar-thumb {
+    background: var(--border-glass);
+    border-radius: 4px;
 }
 
 .sidebar-logo {
@@ -135,62 +172,80 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 2px;
     text-align: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-glass);
 }
 
-/* Sidebar User Profile Card (Dandelion Pro Style) */
+/* Sidebar User Profile Card — compact horizontal row */
 .sidebar-user {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    padding: 15px 10px 25px;
-    margin-bottom: 20px;
-    border-bottom: 1px dashed var(--border-glass);
+    gap: 10px;
+    padding: 12px 14px;
+    margin: 8px 0 6px;
+    background: rgba(2, 136, 209, 0.04);
+    border: 1px solid var(--border-glass);
+    border-radius: 12px;
     width: 100%;
+    box-sizing: border-box;
+    transition: var(--transition-smooth);
+}
+.sidebar-user:hover {
+    background: rgba(2, 136, 209, 0.07);
 }
 
 .user-avatar {
-    width: 76px;
-    height: 76px;
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid rgba(2, 136, 209, 0.15);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 12px;
-    transition: var(--transition-smooth);
+    border: 2px solid rgba(2, 136, 209, 0.25);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
-.user-avatar:hover {
-    transform: scale(1.05);
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    overflow: hidden;
 }
 
 .user-name {
     font-family: var(--font-heading);
-    font-size: 15px;
+    font-size: 12.5px;
     font-weight: 700;
     color: var(--text-main);
-    margin-bottom: 4px;
-    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
 }
 
-.user-status {
-    font-size: 11px;
-    color: var(--text-muted);
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    justify-content: center;
-}
-
-.status-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background-color: var(--accent-green);
+.user-role-badge {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 1px 6px;
+    border-radius: 4px;
     display: inline-block;
+    width: fit-content;
+}
+.user-role-badge.admin {
+    color: var(--accent-cyan);
+    background: rgba(2, 136, 209, 0.1);
+    border: 1px solid rgba(2, 136, 209, 0.2);
+}
+.user-role-badge.demo {
+    color: #dc2626;
+    background: rgba(220, 38, 38, 0.08);
+    border: 1px solid rgba(220, 38, 38, 0.2);
 }
 
 /* Navigation Categories & Items */
@@ -243,8 +298,12 @@ body {
     margin-left: 260px;
     padding: 40px;
     position: relative;
-    transition: var(--transition-smooth);
     width: calc(100% - 260px);
+    height: 100vh;         /* Full viewport height */
+    overflow-y: auto;      /* Only this area scrolls */
+    overflow-x: hidden;
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Curved Header Wave Banner (Dandelion Pro Style) */
@@ -868,25 +927,43 @@ textarea {
     z-index: 999;
 }
 
+/* ── Smooth active nav indicator ──────────────────────────────── */
+.nav-item {
+    position: relative;
+}
+.nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 60%;
+    border-radius: 0 4px 4px 0;
+    background: var(--accent-cyan);
+    transition: var(--transition-smooth);
+}
+
 /* ── Media Queries & Responsive Layout ──────────────────────── */
 @media (max-width: 1024px) {
     .menu-toggle {
         display: inline-flex;
     }
-    
+
     .sidebar {
         left: -260px;
+        box-shadow: none;
     }
-    
+
     .sidebar.active {
         left: 0;
-        box-shadow: 10px 0 40px rgba(0, 0, 0, 0.2);
+        box-shadow: 4px 0 30px rgba(0, 0, 0, 0.18);
     }
-    
+
     .sidebar-overlay.active {
         display: block;
     }
-    
+
     .main-content {
         margin-left: 0;
         width: 100%;
@@ -896,23 +973,23 @@ textarea {
 
 @media (max-width: 640px) {
     .header h1 {
-        font-size: 24px;
+        font-size: 22px;
     }
-    
+
     .stats-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .form-container {
         padding: 20px;
     }
-    
+
     .section-title {
         flex-direction: column;
         align-items: flex-start;
         gap: 12px;
     }
-    
+
     .section-title .btn {
         width: 100%;
         justify-content: center;

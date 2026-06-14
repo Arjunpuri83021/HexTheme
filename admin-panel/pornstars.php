@@ -56,20 +56,11 @@ $pornstars = get_terms(array(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hexmy Admin - Pornstars</title>
-    <link rel="stylesheet" href="css/admin-style.css">
-    <script src="js/admin.js" defer></script>
+    <link rel="stylesheet" href="css/admin-style.css?v=3">
+    <script src="js/admin.js?v=3" defer></script>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="sidebar-logo">HEXMY</div>
-        <a href="dashboard.php" class="nav-item">Dashboard</a>
-        <a href="videos.php" class="nav-item">Videos</a>
-        <a href="add-video.php" class="nav-item">Add Video</a>
-        <a href="categories.php" class="nav-item">Categories</a>
-        <a href="tags.php" class="nav-item">Tags</a>
-        <a href="pornstars.php" class="nav-item active">Pornstars</a>
-        <a href="scraper.php" class="nav-item">Scraper</a>
-    </div>
+    <?php $active_page = 'pornstars.php'; require_once 'sidebar.php'; ?>
     
     <div class="main-content">
         <div class="header">
@@ -153,3 +144,5 @@ $pornstars = get_terms(array(
     </div>
 </body>
 </html>
+
+

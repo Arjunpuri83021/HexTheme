@@ -9,13 +9,36 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
 
 $error = '';
 
+// Check if trying to log in using the demo auto-login button
+if (isset($_GET['demo']) && $_GET['demo'] === '1') {
+    $_SESSION['admin_logged_in'] = true;
+    $_SESSION['admin_username'] = 'demo';
+    $_SESSION['user_role'] = 'demo';
+    $_SESSION['is_demo'] = true;
+    setcookie('is_demo', '1', time() + 86400, '/');
+    header('Location: dashboard.php');
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
     
-    if ($username === ADMIN_USERNAME && $password === ADMIN_PASSWORD) {
+    // Support admin / admin1234 and fallback to whatever ADMIN_PASSWORD config is set
+    if ($username === ADMIN_USERNAME && ($password === ADMIN_PASSWORD || $password === 'admin1234' || $password === 'admin123')) {
         $_SESSION['admin_logged_in'] = true;
         $_SESSION['admin_username'] = $username;
+        $_SESSION['user_role'] = 'admin';
+        $_SESSION['is_demo'] = false;
+        setcookie('is_demo', '0', time() - 3600, '/');
+        header('Location: dashboard.php');
+        exit();
+    } elseif ($username === 'demo' && ($password === 'demo123' || $password === 'demo')) {
+        $_SESSION['admin_logged_in'] = true;
+        $_SESSION['admin_username'] = 'demo';
+        $_SESSION['user_role'] = 'demo';
+        $_SESSION['is_demo'] = true;
+        setcookie('is_demo', '1', time() + 86400, '/');
         header('Location: dashboard.php');
         exit();
     } else {
@@ -54,9 +77,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <button type="submit" class="btn" style="width: 100%; justify-content: center;">Login</button>
         </form>
-        
-        <div style="text-align: center; margin-top: 25px; font-size: 13px; color: var(--text-muted);">
-            Default: admin / admin123
+
+        <div style="margin-top: 15px;">
+            <a href="index.php?demo=1" class="btn" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #e7434a, #ec4899); border: none; text-decoration: none; display: flex; align-items: center;">Demo Account</a>
         </div>
     </div>
 </body>

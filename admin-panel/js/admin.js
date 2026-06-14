@@ -1,4 +1,151 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // ── Demo Mode Configuration ──────────────────────────────────
+    if (document.cookie.indexOf('is_demo=1') !== -1) {
+        // Create demo banner
+        const demoBanner = document.createElement('div');
+        demoBanner.className = 'demo-top-banner';
+        demoBanner.innerHTML = `
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:middle; margin-right:6px;">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            This is a demo account. You can see admin only.
+        `;
+        document.body.insertBefore(demoBanner, document.body.firstChild);
+
+        // Add custom styles for demo banner and disabled state
+        const demoStyle = document.createElement('style');
+        demoStyle.innerHTML = `
+            .demo-top-banner {
+                background: #dc2626 !important;
+                color: #ffffff !important;
+                text-align: center;
+                padding: 10px;
+                font-size: 14px;
+                font-weight: 700;
+                width: 100%;
+                box-sizing: border-box;
+                z-index: 10000;
+                position: fixed;
+                top: 0;
+                left: 0;
+                box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 40px;
+            }
+            body {
+                padding-top: 40px !important;
+            }
+            .sidebar {
+                top: 40px !important;
+                height: calc(100vh - 40px) !important;
+            }
+            /* Style buttons to look visually disabled and block clicks */
+            button[type="submit"], 
+            input[type="submit"],
+            .btn:not(#menu-toggle),
+            .action-btn.delete-btn,
+            .action-btn.edit-btn,
+            .table-container .btn,
+            .section-title .btn,
+            a[href^="edit-video.php"],
+            a[href^="delete-video.php"],
+            a[href*="delete="],
+            a[href*="delete_tag="],
+            a[href*="delete_pornstar="] {
+                opacity: 0.5 !important;
+                cursor: not-allowed !important;
+                background: #888888 !important;
+                border-color: #888888 !important;
+            }
+        `;
+        document.head.appendChild(demoStyle);
+        
+        // Prevent all clicks on disabled actions, forms, and inputs to show the disclaimer alert
+        document.addEventListener('click', function(e) {
+            const target = e.target;
+            
+            // Check if clicked element or parent is form, input, select, textarea, button or action button
+            const isAction = target.closest(
+                'button, ' +
+                'input, ' +
+                'select, ' +
+                'textarea, ' +
+                '.btn:not(#menu-toggle), ' +
+                '.action-btn.delete-btn, ' +
+                '.action-btn.edit-btn, ' +
+                '.table-container .btn, ' +
+                '.section-title .btn, ' +
+                'a[href^="edit-video.php"], ' +
+                'a[href^="delete-video.php"], ' +
+                'a[href*="delete="], ' +
+                'a[href*="delete_tag="], ' +
+                'a[href*="delete_pornstar="]'
+            );
+            
+            if (isAction) {
+                // Exclude theme toggle, menu toggle, and Target Website dropdown (view-only allowed)
+                if (
+                    target.id === 'menu-toggle' ||
+                    target.id === 'scraper_site' ||
+                    target.closest('#scraper_site') ||
+                    target.classList.contains('theme-toggle-btn') ||
+                    target.closest('.theme-toggle-btn') ||
+                    target.closest('.menu-toggle')
+                ) {
+                    return;
+                }
+                
+                e.preventDefault();
+                e.stopPropagation();
+                alert("This is a demo account. You can see admin only.");
+            }
+        }, true); // Capture phase
+
+        // Prevent all keydown actions inside inputs to block typing
+        document.addEventListener('keydown', function(e) {
+            const target = e.target;
+            if (target.closest('input, textarea, select') && !target.closest('.theme-toggle-btn') && !target.closest('#menu-toggle')) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }, true); // Capture phase
+
+        // Mark form elements style as read-only and disabled cursor
+        setTimeout(function() {
+            const inputs = document.querySelectorAll('input, select, textarea');
+            inputs.forEach(el => {
+                // Skip menu toggle, theme toggle, and the Target Website dropdown (readable by demo)
+                if (
+                    el.id === 'menu-toggle' ||
+                    el.id === 'scraper_site' ||
+                    el.classList.contains('theme-toggle-btn') ||
+                    el.closest('.theme-toggle-btn') ||
+                    el.closest('.menu-toggle')
+                ) {
+                    return;
+                }
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    el.readOnly = true;
+                }
+                el.style.opacity = '0.6';
+                el.style.cursor = 'not-allowed';
+                el.title = "This is a demo account. You can see admin only.";
+            });
+        }, 100);
+
+    }
+
+    if (document.cookie.indexOf('demo_alert=1') !== -1) {
+        // Show alert
+        alert("Demo Version: Actions/modifications are disabled. You can only view the data.");
+        // Expire the cookie
+        document.cookie = 'demo_alert=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+
     // ── Theme Switcher Configuration & Injection ────────────────
     const currentTheme = localStorage.getItem('admin-theme') || 'light';
     if (currentTheme === 'dark') {
@@ -32,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const logoutBtn = header.querySelector('.logout-btn');
         if (logoutBtn) {
-            header.insertBefore(toggleBtn, logoutBtn);
+            logoutBtn.parentNode.insertBefore(toggleBtn, logoutBtn);
         } else {
             header.appendChild(toggleBtn);
         }
@@ -55,75 +202,81 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ── Dandelion Pro Sidebar Enhancements ────────────────────────
+    // ── Sidebar Enhancements (guarded: runs once per page load) ─────
     const sidebar = document.querySelector('.sidebar');
-    if (sidebar) {
-        // 1. Inject User Profile Card
-        const logo = sidebar.querySelector('.sidebar-logo');
-        if (logo && !sidebar.querySelector('.sidebar-user')) {
-            const userCard = document.createElement('div');
+    if (sidebar && !sidebar.dataset.enhanced) {
+        sidebar.dataset.enhanced = '1';
+
+        // 1. User Profile Card — compact horizontal
+        const brand = sidebar.querySelector('.sidebar-brand');
+        if (brand && !brand.querySelector('.sidebar-user')) {
+            const isDemoUser = document.cookie.indexOf('is_demo=1') !== -1;
+            const roleName   = isDemoUser ? 'Demo' : 'Admin';
+            const roleCls    = isDemoUser ? 'demo' : 'admin';
+            const userName   = isDemoUser ? 'Demo User' : 'Admin User';
+            const userCard   = document.createElement('div');
             userCard.className = 'sidebar-user';
             userCard.innerHTML = `
-                <img src="https://secure.gravatar.com/avatar/d5e2e28cf692b72cfd8cc124d5e2e28c?s=96&d=mm&r=g" class="user-avatar" alt="User Avatar">
-                <div class="user-name">Admin User</div>
-                <div class="user-status"><span class="status-dot"></span> Online</div>
+                <img src="https://secure.gravatar.com/avatar/d5e2e28cf692b72cfd8cc124d5e2e28c?s=68&d=mm&r=g" class="user-avatar" alt="Avatar">
+                <div class="user-info">
+                    <div class="user-name">${userName}</div>
+                    <span class="user-role-badge ${roleCls}">${roleName}</span>
+                </div>
             `;
-            logo.parentNode.insertBefore(userCard, logo.nextSibling);
+            brand.appendChild(userCard);
         }
 
-        // 2. Map SVGs to Menu Items and Inject Section Headers
-        if (!sidebar.querySelector('a[href="ads.php"]')) {
-            const adsLink = document.createElement('a');
-            adsLink.href = 'ads.php';
-            adsLink.className = 'nav-item';
-            if (window.location.pathname.endsWith('ads.php')) {
-                adsLink.classList.add('active');
-            }
-            adsLink.innerHTML = `<span>Ad Network</span>`;
-            const scraperLink = sidebar.querySelector('a[href="scraper.php"]');
-            if (scraperLink) {
-                scraperLink.parentNode.insertBefore(adsLink, scraperLink);
-            }
-        }
+        // 2. Nav container
+        const navEl = sidebar.querySelector('.sidebar-nav') || sidebar;
 
-        const navItems = sidebar.querySelectorAll('.nav-item');
+
+        const currentPage = window.location.pathname.split('/').pop() || 'dashboard.php';
+        navEl.querySelectorAll('.nav-item').forEach(item => {
+            const href = item.getAttribute('href');
+            if (href === currentPage) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+
+        // 5. Icons & section headers
         const icons = {
-            'dashboard.php': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>`,
-            'videos.php': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>`,
-            'add-video.php': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>`,
-            'categories.php': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>`,
-            'tags.php': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>`,
-            'pornstars.php': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`,
-            'scraper.php': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>`,
-            'ads.php': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>`
+            'dashboard.php':  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>`,
+            'videos.php':     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>`,
+            'add-video.php':  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>`,
+            'categories.php': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>`,
+            'tags.php':       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>`,
+            'pornstars.php':  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+            'scraper.php':    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`,
+            'ads.php':        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>`
+        };
+        const sectionHeaders = {
+            'dashboard.php': 'Dashboard',
+            'videos.php':    'Content Management',
+            'scraper.php':   'Tools'
         };
 
-        navItems.forEach(item => {
+        navEl.querySelectorAll('.nav-item').forEach(item => {
             const href = item.getAttribute('href');
-            // Prepend matching SVG
+            // Inject icon once
             if (icons[href] && !item.querySelector('svg')) {
                 item.insertAdjacentHTML('afterbegin', icons[href]);
             }
-
-            // Insert Section Headers
-            if (href === 'dashboard.php') {
-                const headerDiv = document.createElement('div');
-                headerDiv.className = 'menu-section-header';
-                headerDiv.textContent = 'Dashboard';
-                item.parentNode.insertBefore(headerDiv, item);
-            } else if (href === 'videos.php') {
-                const headerDiv = document.createElement('div');
-                headerDiv.className = 'menu-section-header';
-                headerDiv.textContent = 'Content Management';
-                item.parentNode.insertBefore(headerDiv, item);
-            } else if (href === 'scraper.php') {
-                const headerDiv = document.createElement('div');
-                headerDiv.className = 'menu-section-header';
-                headerDiv.textContent = 'Tools';
-                item.parentNode.insertBefore(headerDiv, item);
+            // Inject section header (guarded: skip if previous sibling is already a header)
+            if (sectionHeaders[href]) {
+                const prev = item.previousElementSibling;
+                if (!prev || !prev.classList.contains('menu-section-header')) {
+                    const hdr = document.createElement('div');
+                    hdr.className = 'menu-section-header';
+                    hdr.textContent = sectionHeaders[href];
+                    item.parentNode.insertBefore(hdr, item);
+                }
             }
         });
     }
+
+
 
     // ── Scraper Live Metrics Cards Vector Icons Injection ─────────
     const scraperCards = {
