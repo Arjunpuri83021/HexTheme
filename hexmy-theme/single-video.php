@@ -1,13 +1,28 @@
 <?php get_header(); ?>
 
 <style>
-    /* Prevent page-level horizontal overflow */
-    html, body { overflow-x: hidden; max-width: 100%; }
+    /* Prevent page-level horizontal overflow — ALL levels */
+    html, body {
+        overflow-x: hidden !important;
+        max-width: 100% !important;
+    }
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
 
     .single-video-layout {
         display: grid;
         grid-template-columns: 2fr 1fr;
         gap: 30px;
+        /* Prevent grid blowout — children can't expand grid beyond container */
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    /* CRITICAL: grid children must have min-width:0 to prevent overflow */
+    .single-video-layout > * {
+        min-width: 0;
+        overflow: hidden;
     }
 
     /* ---- Video player: force responsive iframe/video ---- */
