@@ -2,12 +2,38 @@
 
 <style>
     /* Prevent page-level horizontal overflow */
-    body { overflow-x: hidden; }
+    html, body { overflow-x: hidden; max-width: 100%; }
 
     .single-video-layout {
         display: grid;
         grid-template-columns: 2fr 1fr;
         gap: 30px;
+    }
+
+    /* ---- Video player: force responsive iframe/video ---- */
+    .video-player-wrap {
+        position: relative;
+        width: 100%;
+        padding-top: 56.25%; /* 16:9 aspect ratio */
+        overflow: hidden;
+        background: #000;
+    }
+    .video-player-wrap iframe,
+    .video-player-wrap video {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        border: none !important;
+        max-width: 100% !important;
+    }
+
+    /* Fallback: any iframe inside .glass ---- */
+    .glass iframe,
+    .glass video {
+        max-width: 100% !important;
+        width: 100% !important;
     }
 
     @keyframes download-pulse {
@@ -84,7 +110,7 @@
         <!-- Video Player Section -->
         <div>
             <div class="glass" style="border-radius: 4px; overflow: hidden; margin-bottom: 30px;">
-                <div style="aspect-ratio: 16/9; background: var(--bg-secondary); display: flex; align-items: center; justify-content: center; position: relative;">
+                <div class="video-player-wrap">
                     <?php
                     $iframe_url = get_post_meta(get_the_ID(), '_video_iframe_url', true);
                     $video_url = get_post_meta(get_the_ID(), '_video_url', true);

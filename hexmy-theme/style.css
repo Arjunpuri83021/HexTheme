@@ -85,6 +85,29 @@ img {
     display: none;
 }
 
+/* ---- Responsive iframe / video player (sitewide) ---- */
+iframe, video {
+    max-width: 100%;
+}
+
+/* Padding-top trick for 16:9 responsive iframes */
+.video-player-wrap {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    overflow: hidden;
+    background: #000;
+}
+.video-player-wrap iframe,
+.video-player-wrap video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
 /* Header */
 .site-header {
     background: #ffffff;
