@@ -1035,6 +1035,37 @@ input[type="search"]:focus, input[type="text"]:focus, textarea:focus {
     .header-bottom {
         display: none;
     }
+
+    /* ---- Navbar padding fix: give header left/right breathing room ---- */
+    .header-top .container,
+    .header-top-inner {
+        padding-left: 14px !important;
+        padding-right: 14px !important;
+    }
+
+    /* Toggle buttons — proper tap target size, no squeeze */
+    .menu-toggle,
+    .search-toggle {
+        min-width: 38px !important;
+        min-height: 38px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 6px !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Header right actions — gap between search and menu icon */
+    .header-right-actions {
+        gap: 6px !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Logo — don't let it grow too wide and push buttons off */
+    .site-logo {
+        flex-shrink: 0 !important;
+    }
+
     .site-main {
         padding-top: 15px;
     }
