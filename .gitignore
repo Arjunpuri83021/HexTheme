@@ -1,0 +1,40 @@
+# WordPress sensitive files
+wp-config.php
+
+# WordPress core (can be downloaded fresh)
+wp-admin/
+wp-includes/
+
+# Uploads (media files - too large for git)
+wp-content/uploads/
+
+# WordPress cache & temp files
+wp-content/cache/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+
+# Logs
+*.log
+error_log
+debug.log
+wp-content/debug.log
+
+# Temp files
+temp_extraction/
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Scraper progress/state files
+admin-panel/scraper_progress.json
+
+# Node modules (if any)
+node_modules/
+
+# IDE files
+.vscode/
+.idea/

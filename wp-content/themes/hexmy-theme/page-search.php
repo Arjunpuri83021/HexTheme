@@ -1,0 +1,224 @@
+<?php
+/**
+ * Template Name: Search Results Page
+ * File: page-search.php
+ */
+
+get_header();
+
+$s = isset($_GET['q']) ? sanitize_text_field($_GET['q']) : '';
+$s = trim($s);
+
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+$posts_per_page = 16;
+
+$search_query = null;
+$total_results = 0;
+
+if (!empty($s)) {
+    global $wpdb;
+    $search_term = '%' . $wpdb->esc_like($s) . '%';
+    
+    // Direct SQL query to select post IDs matching title, tag, or pornstar
+    $query_str = $wpdb->prepare(
+        "SELECT DISTINCT p.ID FROM {$wpdb->posts} p
+        LEFT JOIN {$wpdb->term_relationships} tr ON (p.ID = tr.object_id)
+        LEFT JOIN {$wpdb->term_taxonomy} tt ON (tr.term_taxonomy_id = tt.term_taxonomy_id)
+        LEFT JOIN {$wpdb->terms} t ON (tt.term_id = t.term_id)
+        WHERE p.post_type = 'video' 
+        AND p.post_status = 'publish'
+        AND (
+            p.post_title LIKE %s
+            OR p.post_content LIKE %s
+            OR (tt.taxonomy IN ('video_tag', 'pornstar') AND t.name LIKE %s)
+        )",
+        $search_term, $search_term, $search_term
+    );
+    
+    $post_ids = $wpdb->get_col($query_str);
+    
+    if (!empty($post_ids)) {
+        $args = array(
+            'post_type' => 'video',
+            'post__in' => $post_ids,
+            'posts_per_page' => $posts_per_page,
+            'paged' => $paged,
+            'orderby' => 'post__in',
+        );
+        $search_query = new WP_Query($args);
+        $total_results = $search_query->found_posts;
+    } else {
+        $search_query = new WP_Query(array('post__in' => array(0)));
+        $total_results = 0;
+    }
+}
+?>
+
+<div class="container" style="padding-top: 30px; padding-bottom: 50px; min-height: 70vh;">
+    <div class="archive-layout">
+        
+        <!-- Left Sidebar (UltimaTube Style) -->
+        <aside class="archive-aside">
+            <!-- Categories block -->
+            <div class="aside-block aside-cats">
+                <h3>Categories</h3>
+                <?php
+                $cats = get_terms(array(
+                    'taxonomy' => 'video_category',
+                    'number' => 10,
+                    'orderby' => 'count',
+                    'order' => 'DESC',
+                ));
+                if (!empty($cats) && !is_wp_error($cats)) :
+                    foreach ($cats as $cat) :
+                ?>
+                    <a href="<?php echo esc_url(get_term_link($cat)); ?>">
+                        <?php echo esc_html($cat->name); ?>
+                    </a>
+                <?php 
+                    endforeach;
+                endif;
+                ?>
+                <a class="show-all-link" href="<?php echo esc_url(home_url('/category/')); ?>">
+                    All categories <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+
+            <!-- Tags block -->
+            <div class="aside-block aside-tags">
+                <h3>Tags</h3>
+                <?php
+                $tags = get_terms(array(
+                    'taxonomy' => 'video_tag',
+                    'number' => 15,
+                    'orderby' => 'count',
+                    'order' => 'DESC',
+                ));
+                if (!empty($tags) && !is_wp_error($tags)) :
+                    foreach ($tags as $tag) :
+                ?>
+                    <a href="<?php echo esc_url(get_term_link($tag)); ?>">
+                        <?php echo esc_html($tag->name); ?>
+                    </a>
+                <?php 
+                    endforeach;
+                endif;
+                ?>
+                <a class="show-all-link" href="<?php echo esc_url(home_url('/tag/')); ?>">
+                    All tags <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+
+            <!-- Actors block -->
+            <div class="aside-block aside-actors">
+                <h3>Pornstars</h3>
+                <?php
+                $actors = get_terms(array(
+                    'taxonomy' => 'pornstar',
+                    'number' => 10,
+                    'orderby' => 'count',
+                    'order' => 'DESC',
+                ));
+                if (!empty($actors) && !is_wp_error($actors)) :
+                    foreach ($actors as $actor) :
+                ?>
+                    <a href="<?php echo esc_url(get_term_link($actor)); ?>">
+                        <?php echo esc_html($actor->name); ?>
+                    </a>
+                <?php 
+                    endforeach;
+                endif;
+                ?>
+                <a class="show-all-link" href="<?php echo esc_url(home_url('/pornstar/')); ?>">
+                    All stars <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Right Content Block -->
+        <main class="archive-content">
+            <?php if (empty($s)) : ?>
+                <!-- Empty query state -->
+                <div style="max-width: 600px; margin: 40px auto; padding: 40px; text-align: center;">
+                    <div style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; background: rgba(239, 193, 39, 0.1); border: 1px solid rgba(239, 193, 39, 0.2); border-radius: 50%; color: var(--accent-color); margin-bottom: 24px;">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </div>
+                    <h2 style="font-size: 24px; font-weight: 700; color: #ffffff; margin-bottom: 12px;">Explore Database</h2>
+                    <p style="color: var(--text-secondary); font-size: 15px; margin-bottom: 8px;">
+                        Enter keywords in the search bar above to look up pornstars, tags, or video titles.
+                    </p>
+                    <p style="color: var(--text-muted); font-size: 13px;">
+                        Search suggestions will appear dynamically as you type.
+                    </p>
+                </div>
+            <?php elseif ($total_results === 0) : ?>
+                <!-- No results found state -->
+                <h2 class="widget-title">
+                    Search Results for &ldquo;<?php echo esc_html(ucfirst($s)); ?>&rdquo;
+                </h2>
+                
+                <div style="max-width: 600px; margin: 40px auto; padding: 40px; text-align: center;">
+                    <div style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; background: rgba(239, 193, 39, 0.1); border: 1px solid rgba(239, 193, 39, 0.2); border-radius: 50%; color: var(--accent-color); margin-bottom: 24px;">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </div>
+                    <h2 style="font-size: 24px; font-weight: 700; color: #ffffff; margin-bottom: 12px;">No results found</h2>
+                    <p style="color: var(--text-secondary); font-size: 15px; margin-bottom: 24px; line-height: 1.6;">
+                        We couldn't find any videos matching &ldquo;<span style="color: var(--accent-color); font-weight: 600;"><?php echo esc_html($s); ?></span>&rdquo;.
+                    </p>
+                    <div style="background: rgba(255,255,255,0.02); border-radius: 4px; padding: 24px; text-align: left; border: 1px solid var(--border-color);">
+                        <h3 style="font-size: 14px; font-weight: 700; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Search Tips</h3>
+                        <ul style="color: var(--text-secondary); font-size: 13px; line-height: 1.8; padding-left: 20px; list-style-type: disc; margin: 0;">
+                            <li>Check your spelling for any typos.</li>
+                            <li>Try using more general keywords (e.g., instead of "extreme blonde compilation", try "blonde").</li>
+                            <li>Search for tags or category names directly (e.g. "milf", "amateur", "lesbian").</li>
+                            <li>Browse our popular categories, stars, or latest releases.</li>
+                        </ul>
+                    </div>
+                </div>
+            <?php else : ?>
+                <!-- Results found state -->
+                <h2 class="widget-title">
+                    Search Results for &ldquo;<?php echo esc_html(ucfirst($s)); ?>&rdquo;
+                </h2>
+                
+                <div style="margin-bottom: 30px; font-size: 14px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px;">
+                    <span>Showing results for</span>
+                    <span style="color: var(--accent-color); font-weight: 600; padding: 2px 8px; background: rgba(239, 193, 39, 0.08); border: 1px solid rgba(239, 193, 39, 0.2); border-radius: 6px;">&ldquo;<?php echo esc_html($s); ?>&rdquo;</span>
+                    <span style="color: var(--text-muted);">&bull; <?php echo esc_html($total_results); ?> videos found</span>
+                </div>
+
+                <div class="video-grid">
+                    <?php 
+                    while ($search_query->have_posts()) : $search_query->the_post(); 
+                        get_template_part('template-parts/video-card');
+                    endwhile; 
+                    wp_reset_postdata();
+                    ?>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination" style="margin-top: 40px; display: flex; justify-content: center; gap: 8px;">
+                    <?php
+                    echo paginate_links(array(
+                        'total' => $search_query->max_num_pages,
+                        'current' => $paged,
+                        'prev_text' => __('&laquo; Prev', 'hexmy'),
+                        'next_text' => __('Next &raquo;', 'hexmy'),
+                        'type' => 'plain',
+                    ));
+                    ?>
+                </div>
+            <?php endif; ?>
+        </main>
+        
+    </div>
+</div>
+
+<?php get_footer(); ?>
