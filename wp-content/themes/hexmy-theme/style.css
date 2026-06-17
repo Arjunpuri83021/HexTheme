@@ -1,0 +1,1917 @@
+/*
+Theme Name: Hexmy
+Theme URI: https://hextheme.com
+Author: Hextheme
+Author URI: https://hextheme.com
+Description: Premium adult video streaming WordPress theme - VRPorn.com UI Clone
+Version: 2.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: hexmy
+Tags: dark-mode, adult, video-streaming, responsive, modern, vrporn
+*/
+
+/* ==========================================================================
+   VRPorn-Style CSS Variables & Design System
+   ========================================================================== */
+:root {
+    --bg-primary: #060606;
+    --bg-secondary: #060606;
+    --bg-tertiary: #060606;
+    --bg-card: #1f1f1f;
+    --bg-card-hover: #262626;
+    --accent-color: #f70023;
+    --accent-hover: #ff1c3e;
+    --accent-gradient: none;
+    --accent-secondary: #ff1c3e;
+    --gradient-primary: #f70023;
+    --text-primary: #ffffff;
+    --text-secondary: #aaaaaa;
+    --text-muted: #65686d;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-color-strong: rgba(255, 255, 255, 0.14);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --transition-smooth: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --transition-fast: all 0.15s ease;
+    --font-primary: 'Archivo Narrow', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    --header-height: 64px;
+    --sidebar-width: 0px;
+    --promo-bar-height: 0px; /* PervClips doesn't use rolling top bar, we set it to 0 */
+}
+
+.glass {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+
+/* ==========================================================================
+   Reset & Base Styles
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+body.body-menu-open {
+    overflow: hidden;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+a:hover {
+    color: var(--accent-color);
+}
+
+img, svg {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+    border: none;
+}
+
+input, button, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+/* ==========================================================================
+   Promotional Banner Bar (Above Header - VRPorn Style)
+   ========================================================================== */
+.promo-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--promo-bar-height);
+    background: var(--accent-gradient);
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.promo-banner__text {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    animation: marquee-pause 0s;
+}
+
+.promo-banner:hover .promo-banner__text {
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   Global Layout Containers
+   ========================================================================== */
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+}
+
+.content {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding-top: calc(var(--header-height) + 44px);
+    padding-left: var(--sidebar-width);
+    transition: padding-left 0.3s ease;
+}
+
+.content__body {
+    background: var(--bg-primary);
+    min-height: calc(100vh - var(--header-height) - var(--promo-bar-height));
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hide local archive aside since global left sidebar is persistent */
+.archive-aside {
+    display: none !important;
+}
+
+.archive-layout {
+    display: block !important;
+}
+
+.archive-content {
+    background: transparent !important;
+    border: none !important;
+    padding: 24px !important;
+    width: 100% !important;
+}
+
+/* ==========================================================================
+   Top Header Bar (VRPorn Style)
+   ========================================================================== */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 1000;
+}
+
+.header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    max-width: 1540px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 20px;
+    gap: 24px;
+}
+
+/* Hamburger / Burger (Hidden on Desktop PervClips) */
+.header__burger {
+    display: none !important;
+}
+
+/* Brand Logo */
+.header__logo {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+}
+
+.logo-image {
+    max-height: 38px;
+    width: auto;
+}
+
+.logo {
+    width: 130px;
+    height: 34px;
+    fill: var(--text-primary);
+}
+
+/* Centered Search Bar (PervClips Style: directly visible on desktop) */
+.header__search {
+    flex: 1;
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 4px;
+    height: 40px;
+    padding-left: 12px;
+    overflow: hidden;
+}
+
+.search__field {
+    flex: 1;
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: #000000;
+    font-size: 14.5px;
+    font-weight: 500;
+    outline: none;
+    padding: 0 10px 0 0;
+}
+
+.search__field::placeholder {
+    color: #65686d;
+}
+
+.search__icon {
+    background: var(--accent-color);
+    color: #ffffff;
+    width: 48px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.15s;
+    border: none;
+}
+
+.search__icon:hover {
+    background: var(--accent-hover);
+}
+
+.ico--magnifier {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+/* Suggestions Dropdown */
+.search-suggestions-dropdown {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    right: 0;
+    background: #111111;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    max-height: 350px;
+    overflow-y: auto;
+    display: none;
+}
+
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 14px;
+    color: var(--text-secondary);
+    transition: var(--transition-fast);
+}
+
+.suggestion-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
+
+.suggestion-name mark {
+    background: transparent;
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+.suggestion-badge {
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 10px;
+}
+
+.suggestion-badge.badge-pornstar {
+    background: rgba(247, 0, 35, 0.12);
+    color: var(--accent-color);
+}
+
+.suggestion-badge.badge-tag {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+}
+
+.suggestion-loading, .suggestion-empty {
+    padding: 16px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* Action Buttons */
+.header__login {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    border-radius: 4px;
+    height: 38px;
+    padding: 0 18px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.button--dark {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.button--dark:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: #fff;
+}
+
+.header__join .button, .button--primary {
+    background: var(--accent-color);
+    color: #ffffff;
+    border: none;
+    font-weight: 700;
+}
+
+.header__join .button:hover, .button--primary:hover {
+    background: var(--accent-hover);
+    box-shadow: 0 0 16px rgba(247, 0, 35, 0.4);
+    color: #fff;
+}
+
+/* ==========================================================================
+   Horizontal Sub-Navigation Menu Bar (PervClips Style)
+   ========================================================================== */
+.subnav {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    height: 44px;
+    background: #060606;
+    border-bottom: 1px solid var(--border-color);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+}
+
+.subnav__inner {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1540px;
+    margin: 0 auto;
+    padding: 0 20px;
+    gap: 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.subnav__inner::-webkit-scrollbar {
+    display: none;
+}
+
+.subnav__link {
+    color: var(--text-secondary);
+    font-size: 13.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    transition: color 0.15s;
+    padding: 6px 0;
+    position: relative;
+}
+
+.subnav__link:hover, .subnav__link.active {
+    color: #ffffff;
+}
+
+.subnav__link.active::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent-color);
+}
+
+/* ==========================================================================
+   Left Persistent Navigation Sidebar (VRPorn Style)
+   ========================================================================== */
+.header__menu {
+    position: fixed;
+    top: calc(var(--promo-bar-height) + var(--header-height));
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    z-index: 998;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: transform 0.3s ease;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+
+.header__menu::-webkit-scrollbar {
+    width: 4px;
+}
+.header__menu::-webkit-scrollbar-track {
+    background: transparent;
+}
+.header__menu::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+}
+
+.header__links {
+    padding: 12px 0 20px;
+}
+
+/* Sidebar Section Divider */
+.sidebar-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 8px 0;
+}
+
+.sidebar-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding: 14px 20px 6px;
+}
+
+.sidebar-nav {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0;
+}
+
+.sidebar-nav__item {
+    width: 100%;
+}
+
+.sidebar-nav__link {
+    display: flex;
+    align-items: center;
+    padding: 11px 20px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 14px;
+    transition: var(--transition-fast);
+    gap: 14px;
+    border-left: 3px solid transparent;
+    position: relative;
+}
+
+.sidebar-nav__link:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-nav__item.active .sidebar-nav__link {
+    color: var(--text-primary);
+    background: rgba(247, 0, 35, 0.08);
+    border-left-color: var(--accent-color);
+}
+
+.sidebar-nav__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.sidebar-nav__icon svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+}
+
+.sidebar-nav__text {
+    font-size: 14px;
+    line-height: 1;
+}
+
+/* SVG icon fill overrides for certain icons */
+.sidebar-nav__icon .ico {
+    fill: currentColor;
+    stroke: none;
+}
+
+/* Language / footer of sidebar */
+.header__menu .header__lang {
+    margin: 16px 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
+.header__menu .header__login {
+    display: none;
+}
+
+/* ==========================================================================
+   Home Page Hero Slider
+   ========================================================================== */
+.tour-slider {
+    position: relative;
+    padding: 0;
+    background: #000;
+    width: 100%;
+    overflow: hidden;
+}
+
+.tour-slider__keen {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1920 / 700;
+    overflow: hidden;
+    background: #000;
+    min-height: 260px;
+}
+
+.hero-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.9s ease-in-out;
+    background-size: cover;
+    background-position: center top;
+    z-index: 1;
+}
+
+.hero-slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.hero-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 80px 40px 40px;
+    background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.6) 55%, rgba(0,0,0,0) 100%);
+    z-index: 3;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    background: var(--accent-color);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+    letter-spacing: 0.8px;
+}
+
+.hero-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.hero-description {
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    max-width: 600px;
+    margin-bottom: 22px;
+    line-height: 1.6;
+}
+
+.hero-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent-color);
+    color: #ffffff;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 13px;
+    padding: 13px 26px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+    transition: var(--transition-fast);
+}
+
+.hero-btn:hover {
+    filter: brightness(1.12);
+    box-shadow: 0 0 20px rgba(247, 0, 35, 0.45);
+    color: #fff;
+}
+
+/* Slider dots */
+.slider-dots {
+    position: absolute;
+    bottom: 16px;
+    right: 20px;
+    z-index: 10;
+    display: flex;
+    gap: 6px;
+}
+
+.slider-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.slider-dot.active {
+    background: var(--accent-color);
+    width: 20px;
+    border-radius: 3px;
+}
+
+/* ==========================================================================
+   Content Sections & Grid Layouts
+   ========================================================================== */
+.section {
+    padding: 28px 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.section__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.section__title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-transform: none;
+    letter-spacing: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section__title::before {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 18px;
+    background: var(--accent-color);
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.section__view-all {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+}
+
+.section__view-all:hover {
+    color: var(--accent-color);
+}
+
+/* Core responsive grid - VRPorn style */
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px 12px;
+    list-style: none;
+    padding: 0;
+}
+
+/* ==========================================================================
+   VRPorn-Style Video Card
+   ========================================================================== */
+.video-card {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: transparent;
+    border-radius: 6px;
+    overflow: hidden;
+    transition: var(--transition-smooth);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.video-card:hover {
+    transform: translateY(-3px);
+}
+
+.video-thumbnail {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #000;
+    border-radius: 6px;
+}
+
+.video-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+    border-radius: 6px;
+}
+
+.video-card:hover .video-thumbnail img {
+    transform: scale(1.04);
+}
+
+/* Hover Preview Video */
+.hover-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 2;
+    border-radius: 6px;
+}
+
+.video-card:hover .hover-preview {
+    opacity: 1;
+}
+
+/* Gradient overlay on bottom of thumbnail */
+.video-thumbnail::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+    border-radius: 0 0 6px 6px;
+}
+
+/* Duration Badge */
+.duration-badge {
+    position: absolute;
+    bottom: 7px;
+    right: 7px;
+    background: rgba(0, 0, 0, 0.85);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 3px;
+    z-index: 3;
+    letter-spacing: 0.3px;
+}
+
+/* HD/Quality Badge */
+.hd-badge {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    background: rgba(0,0,0,0.75);
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 3;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* New Badge */
+.new-badge {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    background: var(--accent-color);
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 3;
+}
+
+/* Video Info Below Thumbnail */
+.video-info {
+    padding: 10px 2px;
+    background: transparent;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.video-card-meta-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.video-card-channel {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.video-card-views {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.video-title {
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 38px;
+    transition: color 0.2s;
+}
+
+.video-card:hover .video-title {
+    color: var(--accent-color);
+}
+
+/* Performer pill in cards */
+.video-card-models {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    padding-top: 6px;
+}
+
+.video-card-model {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.video-card-model-link {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 140px;
+}
+
+/* ==========================================================================
+   Home/Archive Filter Row
+   ========================================================================== */
+.filters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.filter-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-right: 8px;
+}
+
+.filters-list {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.filters-list a {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    transition: var(--transition-fast);
+    background: rgba(255,255,255,0.03);
+}
+
+.filters-list a:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    background: rgba(247, 0, 35, 0.06);
+}
+
+.filters-list a.active {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #ffffff;
+}
+
+/* ==========================================================================
+   Category, Tags & Performer Grids
+   ========================================================================== */
+.categories-grid, .pornstars-grid, .tags-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 30px;
+}
+
+.category-card, .pornstar-card {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    display: block;
+    transition: var(--transition-smooth);
+}
+
+.category-card:hover, .pornstar-card:hover {
+    border-color: rgba(247, 0, 35, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.pornstar-placeholder-avatar {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1e1e1e 0%, #111 100%);
+    color: var(--text-muted);
+}
+
+.tag-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: block;
+    transition: var(--transition-smooth);
+}
+
+.tag-card:hover {
+    background: rgba(247, 0, 35, 0.06);
+    border-color: rgba(247, 0, 35, 0.3);
+    transform: translateY(-2px);
+}
+
+.tag-card-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tag-card-icon {
+    width: 16px;
+    height: 16px;
+    fill: var(--text-muted);
+    flex-shrink: 0;
+    transition: fill 0.2s;
+}
+
+.tag-card:hover .tag-card-icon {
+    fill: var(--accent-color);
+}
+
+.tag-card-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    flex-grow: 1;
+}
+
+.tag-card-count {
+    font-size: 11px;
+    font-weight: 700;
+    background: rgba(247, 0, 35, 0.1);
+    color: var(--accent-color);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.category-card-image, .pornstar-card-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.category-card:hover .category-card-image,
+.pornstar-card:hover .pornstar-card-image {
+    transform: scale(1.06);
+}
+
+.category-card-overlay, .pornstar-card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 40px 16px 14px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 60%, transparent 100%);
+    z-index: 2;
+}
+
+.category-card-name, .pornstar-card-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.category-card-count, .pornstar-card-count {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.6);
+}
+
+.no-tags-found {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+    border: 1px dashed var(--border-color);
+    border-radius: 8px;
+}
+
+/* ==========================================================================
+   Page Headers
+   ========================================================================== */
+.page-header {
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 6px;
+}
+
+.page-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   WP Pagination
+   ========================================================================== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.pagination .page-numbers {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    height: 38px;
+    padding: 0 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    font-weight: 700;
+    font-size: 14px;
+    transition: var(--transition-fast);
+}
+
+.pagination .page-numbers:hover,
+.pagination .page-numbers.current {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #ffffff;
+}
+
+.pagination .page-numbers.dots {
+    background: transparent;
+    border-color: transparent;
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Footer Layout (VRPorn Style)
+   ========================================================================== */
+.site-footer {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    padding: 50px 24px 30px;
+    margin-top: auto;
+    width: 100%;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.5fr repeat(3, 1fr);
+    gap: 40px;
+    margin-bottom: 36px;
+    max-width: 1200px;
+}
+
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.footer-links h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 16px;
+}
+
+.footer-links ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.footer-links a {
+    color: var(--text-secondary);
+    font-size: 13px;
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: var(--text-primary);
+}
+
+.footer-bottom {
+    border-top: 1px solid var(--border-color);
+    padding-top: 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    max-width: 1200px;
+}
+
+/* Age disclaimer bar */
+.footer-age-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 14px 0;
+    border-top: 1px solid var(--border-color);
+    margin-top: 16px;
+    flex-wrap: wrap;
+}
+
+.footer-age-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 2px solid var(--text-muted);
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.footer-age-links {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.footer-age-links a {
+    color: var(--text-muted);
+    font-size: 11px;
+    transition: color 0.2s;
+}
+
+.footer-age-links a:hover {
+    color: var(--text-secondary);
+}
+
+/* Mobile bottom nav - hidden by default on desktop */
+.mobile-bottom-nav {
+    display: none;
+}
+
+/* ==========================================================================
+   Single Video Details Page
+   ========================================================================== */
+.single-video-page {
+    background: transparent;
+    padding: 24px;
+}
+
+.sv-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+}
+
+.sv-main {
+    min-width: 0;
+}
+
+/* Player Wrap */
+.sv-player-wrap {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.sv-player-wrap iframe,
+.sv-player-wrap video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.sv-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 20px 0 14px;
+    line-height: 1.3;
+}
+
+.sv-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.sv-meta-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.sv-meta-chip.rating {
+    background: rgba(247, 0, 35, 0.08);
+    border-color: rgba(247, 0, 35, 0.2);
+    color: var(--accent-color);
+}
+
+.sv-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 26px;
+}
+
+.sv-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    padding: 9px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.sv-btn:hover {
+    background: rgba(255, 255, 255, 0.09);
+    color: #ffffff;
+}
+
+.sv-btn.active-like {
+    background: rgba(129, 189, 0, 0.12);
+    border-color: rgba(129, 189, 0, 0.3);
+    color: #81bd00;
+}
+
+.sv-btn.active-dislike {
+    background: rgba(231, 67, 74, 0.12);
+    border-color: rgba(231, 67, 74, 0.3);
+    color: #e7434a;
+}
+
+.sv-btn.btn-download {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #ffffff;
+}
+
+.sv-btn.btn-download:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 0 12px rgba(247, 0, 35, 0.35);
+    color: #fff;
+}
+
+.sv-section-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sv-section-label::after {
+    content: "";
+    flex-grow: 1;
+    height: 1px;
+    background: var(--border-color);
+}
+
+.sv-stars-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.sv-star-pill {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 6px 14px 6px 6px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    transition: var(--transition-fast);
+}
+
+.sv-star-pill:hover {
+    background: rgba(247, 0, 35, 0.07);
+    border-color: rgba(247, 0, 35, 0.28);
+}
+
+.sv-star-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    color: #ffffff;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.sv-star-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.sv-star-pill:hover .sv-star-name {
+    color: #ffffff;
+}
+
+.sv-desc-panel {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.sv-desc-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.sv-comments-panel {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.sv-comments-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 18px;
+}
+
+.sv-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sv-ad-wrap {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sv-ad-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.sv-related-panel {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 18px;
+}
+
+.sv-related-header {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sv-rel-card {
+    display: flex;
+    gap: 10px;
+    padding: 8px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    transition: var(--transition-fast);
+}
+
+.sv-rel-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.sv-rel-thumb {
+    width: 110px;
+    aspect-ratio: 16 / 9;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    background: #000;
+    flex-shrink: 0;
+}
+
+.sv-rel-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.sv-rel-badge {
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 4px;
+    border-radius: 2px;
+}
+
+.sv-rel-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 36px;
+}
+
+.sv-rel-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-top: 4px;
+    display: block;
+}
+
+.sv-view-more {
+    display: block;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
+    padding: 11px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 8px;
+}
+
+.sv-view-more:hover {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #ffffff;
+}
+
+.sv-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(30px);
+    background: var(--accent-color);
+    color: #ffffff;
+    padding: 12px 28px;
+    border-radius: 24px;
+    font-weight: 700;
+    font-size: 13.5px;
+    z-index: 99999;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.sv-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ==========================================================================
+   Skeleton Loading
+   ========================================================================== */
+.skeleton {
+    background: linear-gradient(90deg, #1e1e1e 25%, #2a2a2a 50%, #1e1e1e 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s infinite;
+    border-radius: 4px;
+}
+
+@keyframes skeleton-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Fade in animation */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.4s ease both;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+
+/* Large Desktop - sidebar always visible */
+@media screen and (min-width: 1200px) {
+    .header__burger {
+        display: none;
+    }
+
+    .header__menu {
+        transform: translateX(0) !important;
+    }
+}
+
+/* Desktop with sidebar toggle */
+@media screen and (max-width: 1199px) {
+    .content {
+        padding-left: 0;
+    }
+
+    .header__menu {
+        transform: translateX(-100%);
+        z-index: 1001;
+    }
+
+    .header__menu.active {
+        transform: translateX(0);
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .header__burger {
+        display: flex;
+    }
+
+    .video-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Tablet */
+@media screen and (max-width: 960px) {
+    .video-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .categories-grid, .pornstars-grid, .tags-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sv-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header__login .button--dark {
+        display: none;
+    }
+
+    .section {
+        padding: 20px 16px;
+    }
+}
+
+/* Mobile */
+@media screen and (max-width: 639px) {
+    :root {
+        --header-height: 56px;
+        --promo-bar-height: 36px;
+    }
+
+    .header__inner {
+        padding: 0 12px;
+    }
+
+    .header__logo {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .logo {
+        width: 90px;
+        height: 28px;
+    }
+
+    .header__menu {
+        top: calc(var(--promo-bar-height) + var(--header-height));
+        width: 260px;
+    }
+
+    .header__login {
+        display: none;
+    }
+
+    .header__menu .header__login {
+        display: flex;
+        flex-direction: column;
+        margin: 16px 20px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border-color);
+        gap: 10px;
+    }
+
+    .header__menu .header__login .button {
+        width: 100%;
+    }
+
+    .video-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px 6px;
+    }
+
+    .categories-grid, .pornstars-grid, .tags-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .section {
+        padding: 14px 10px;
+    }
+
+    .hero-title {
+        font-size: 18px !important;
+    }
+
+    .hero-description {
+        display: none;
+    }
+
+    .hero-content {
+        padding: 30px 16px 16px !important;
+    }
+
+    .hero-btn {
+        padding: 10px 18px !important;
+        font-size: 12px !important;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .site-footer {
+        padding: 36px 16px 80px;
+    }
+
+    .filter-title {
+        display: none;
+    }
+
+    .filters {
+        justify-content: center;
+        margin-bottom: 16px;
+    }
+
+    .promo-banner__text {
+        font-size: 11px;
+    }
+
+    /* Mobile Bottom Navigation Bar */
+    .mobile-bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 58px;
+        background: var(--bg-secondary);
+        border-top: 1px solid var(--border-color);
+        z-index: 1000;
+    }
+
+    .mob-nav-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        font-size: 9px;
+        font-weight: 600;
+        text-transform: uppercase;
+        gap: 3px;
+        transition: color 0.2s;
+        letter-spacing: 0.3px;
+    }
+
+    .mob-nav-item.active, .mob-nav-item:hover {
+        color: var(--accent-color);
+    }
+
+    .mob-nav-item svg {
+        width: 22px;
+        height: 22px;
+        fill: currentColor;
+    }
+
+    .mob-nav-search svg {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2px;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .video-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Mobile search dropdown active state */
+.mobile-search-dropdown.active {
+    top: calc(var(--promo-bar-height) + var(--header-height)) !important;
+}

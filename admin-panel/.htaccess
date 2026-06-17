@@ -1,0 +1,16 @@
+# Disable WordPress for admin panel
+<IfModule mod_rewrite.c>
+    RewriteEngine Off
+</IfModule>
+
+# Set default handler to PHP
+DirectoryIndex index.php
+
+# PHP settings
+php_value display_errors 1
+php_value error_reporting E_ALL
+
+# Prevent WordPress from loading
+<FilesMatch "\.php$">
+    SetHandler application/x-httpd-php
+</FilesMatch>
